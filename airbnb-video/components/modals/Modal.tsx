@@ -14,7 +14,7 @@ interface ModalProps {
     actionLabel: string;
     disabled?: boolean;
     secondaryAction?: () => void;
-    secondaryLabel?: string;
+    secondaryActionLabel?: string;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -27,7 +27,7 @@ const Modal: React.FC<ModalProps> = ({
     actionLabel, 
     disabled, 
     secondaryAction, 
-    secondaryLabel
+    secondaryActionLabel
 }) => {
 
     const [showModal, setShowModal] = useState(isOpen);
@@ -48,13 +48,14 @@ const Modal: React.FC<ModalProps> = ({
     }, 300)
     }, [disabled, onClose])
 
-    const handleSubmit = useCallback(() => {
-        if(disabled){
-            return;
-        }
+   
+  const handleSubmit = useCallback(() => {
+    if (disabled) {
+      return;
+    }
 
-        onSubmit();
-    }, [disabled, onSubmit])
+    onSubmit();
+  }, [onSubmit, disabled]);
 
     const handleSecondaryAction = useCallback(() => {
         if(disabled || !secondaryAction){
@@ -96,6 +97,16 @@ const Modal: React.FC<ModalProps> = ({
                             {/* FOOTER */}
                             <div className="flex flex-col gap-2 p-6">
                                 <div className="flex flex-row items-center gap-4 w-full">
+
+                                     {secondaryAction && secondaryActionLabel && (
+                                            <Button 
+                                            disabled={disabled} 
+                                            label={secondaryActionLabel} 
+                                            onClick={handleSecondaryAction} 
+                                            outline 
+                                             />
+
+                                     )}
                                     <Button 
                                     disabled={disabled} 
                                     label={actionLabel} 
@@ -103,6 +114,7 @@ const Modal: React.FC<ModalProps> = ({
                                     outline={false} 
                                     small={false} />
                                 </div>
+                                {footer}
                             </div>
 
                     </div>
